@@ -17,10 +17,10 @@ function App() {
 
     return (
         <main className="relative h-screen overflow-hidden">
-            <video className="absolute w-full object-fill -z-10" autoPlay muted loop>
-                <source src="/public/celeste.mp4" />
+            <video className="absolute h-screen w-full object-cover -z-10" autoPlay muted loop>
+                <source src="/celeste.mp4" />
             </video>
-            <h1 className="text-5xl my-5 font-bold text-white text-center">Advent Calendar Geek Edition</h1>
+            <h1 className="text-4xl md:text-5xl my-5 font-bold text-white text-center">Advent Calendar Geek Edition</h1>
             <div className="relative">
                 <div className="absolute bottom-0 -left-5 h-[27px] w-[250px] bg-black -z-10 -skew-x-[20deg]"></div>
                 <Countdown
@@ -28,9 +28,9 @@ function App() {
                     className="text-stroke text-4xl text-white font-bold ml-5 z-10"
                 />
             </div>
-            <div className="grid grid-cols-2 place-items-center h-screen">
-                <div></div>
-                <div className="grid grid-cols-6 gap-x-2 gap-y-3 grid-flow-dense min-w-[500px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 place-items-center h-screen">
+                <div className="hidden md:block"></div>
+                <div className="grid grid-cols-6 gap-x-2 gap-y-3 grid-flow-dense w-[300px] md:min-w-[500px]">
                     {shuffledNumbers.map((number) => (
                         <CalendarCase number={number} />
                     ))}
