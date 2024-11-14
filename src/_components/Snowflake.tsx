@@ -1,10 +1,17 @@
 const randomRotation = () => Math.random() * 360;
 
-const Snowflake = () => {
+interface SnowflakeProps {
+    incrementCount: () => void;
+}
+
+const Snowflake = ({ incrementCount }: SnowflakeProps) => {
     return (
-        <div className="snowflake">
+        <button
+            onClick={incrementCount}
+            className="snowflake"
+        >
             <img src="strawberry.png" className="w-10" style={{ transform: `rotate(${randomRotation()}deg)` }} />
-        </div>
+        </button>
     )
 }
 

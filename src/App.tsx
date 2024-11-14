@@ -67,7 +67,6 @@ function App() {
                 styles: newStyles
             };
             setCalendarState(newState);
-            setCount(0);
             localStorage.setItem("calendarState", JSON.stringify(newState));
         }
 
@@ -80,6 +79,14 @@ function App() {
 
     }, []);
 
+    const incrementCount = () => {
+        setCount(count => {
+            const newCount = count + 1;
+            localStorage.setItem("count", JSON.stringify(newCount));
+            return newCount;
+        });
+    }
+
     // Fonction pour réinitialiser le localStorage
     const resetLocalStorage = () => {
         localStorage.clear();
@@ -88,7 +95,7 @@ function App() {
 
     return (
         <section className="relative h-screen overflow-hidden">
-            <Snowflakes />
+            <Snowflakes incrementCount={incrementCount} />
             <video className="absolute h-screen w-full object-cover -z-10" autoPlay muted loop>
                 <source src="/celeste.mp4" />
             </video>
