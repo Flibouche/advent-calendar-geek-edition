@@ -30,7 +30,7 @@ function App() {
             </div>
             <div className="grid grid-cols-2 place-items-center h-screen">
                 <div></div>
-                <div className="grid grid-cols-6 gap-4 mr-5">
+                <div className="grid grid-cols-6 gap-x-2 gap-y-3 grid-flow-dense min-w-[500px]">
                     {shuffledNumbers.map((number) => (
                         <CalendarCase number={number} />
                     ))}
