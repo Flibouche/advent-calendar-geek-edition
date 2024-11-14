@@ -4,6 +4,8 @@ import { CalendarState, CaseStyle } from "./lib/types/types";
 
 // Components
 import CalendarCase from "./_components/CalendarCase";
+import Snowflake from "./_components/Snowflake";
+import Snowflakes from "./_components/Snowflakes";
 
 // Utilisation de l'algorithme de Fisher-Yates pour mélanger les nombres
 function shuffle(array: number[]) {
@@ -86,6 +88,7 @@ function App() {
 
     return (
         <section className="relative h-screen overflow-hidden">
+            <Snowflakes />
             <video className="absolute h-screen w-full object-cover -z-10" autoPlay muted loop>
                 <source src="/celeste.mp4" />
             </video>
