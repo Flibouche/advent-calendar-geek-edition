@@ -1,34 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import CalendarCase from "./_components/CalendarCase"
+
+// Utilisation de l'algorithme de Fisher-Yates pour mélanger les nombres
+function shuffle(array: number[]) {
+    for (let currentIndex = array.length - 1; currentIndex > 0; currentIndex--) {
+        const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+    const numbers = Array.from({ length: 24 }, (_, i) => i + 1);
+    const shuffledNumbers = shuffle(numbers);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <main className="relative h-screen overflow-hidden">
+            <video className="absolute w-full object-fill -z-10" autoPlay muted loop>
+                <source src="/public/celeste.mp4" />
+            </video>
+            <h1 className="text-4xl font-bold text-white text-center">Advent Calendar Geek Edition</h1>
+            <div className="grid grid-cols-2 place-items-center h-screen">
+                <div></div>
+                <div className="grid grid-cols-6 gap-4 mr-5">
+                    {shuffledNumbers.map((number) => (
+                        <CalendarCase number={number} />
+                    ))}
+                </div>
+            </div>
+        </main>
+    )
 }
 
 export default App
