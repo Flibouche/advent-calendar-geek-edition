@@ -4,8 +4,6 @@ import { CalendarState, CaseStyle } from "./lib/types/types";
 
 // Components
 import CalendarCase from "./_components/CalendarCase";
-import Snowflake from "./_components/Snowflake";
-import Snowflakes from "./_components/Snowflakes";
 
 // Utilisation de l'algorithme de Fisher-Yates pour mélanger les nombres
 function shuffle(array: number[]) {
@@ -79,6 +77,34 @@ function App() {
 
     }, []);
 
+    // Je crée un effet pour créer des flocons de neige à intervalles réguliers
+    useEffect(() => {
+        const createSnowflake = () => {
+            const snowflake = document.createElement("div");
+            snowflake.classList.add("snowflake");
+            snowflake.innerText = "❄️";
+
+            snowflake.style.left = Math.random() * 100 + "vw";
+            snowflake.style.fontSize = `${Math.random() * 20 + 10}px`;
+            snowflake.style.animationDuration = Math.random() * 3 + 5 + "s";
+
+            snowflake.addEventListener("click", () => {
+                incrementCount();
+                snowflake.remove();
+            });
+
+            document.body.appendChild(snowflake);
+        };
+
+        const snowInterval = setInterval(createSnowflake, 300);
+        const timeout = setTimeout(() => clearInterval(snowInterval), 10000);
+
+        return () => {
+            clearInterval(snowInterval);
+            clearTimeout(timeout);
+        };
+    }, []);
+
     const incrementCount = () => {
         setCount(count => {
             const newCount = count + 1;
@@ -95,7 +121,6 @@ function App() {
 
     return (
         <section className="relative h-screen overflow-hidden">
-            <Snowflakes incrementCount={incrementCount} />
             <video className="absolute h-screen w-full object-cover -z-10" autoPlay muted loop>
                 <source src="/celeste.mp4" />
             </video>
