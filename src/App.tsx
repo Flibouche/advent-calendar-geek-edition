@@ -5,6 +5,9 @@ import { CalendarState, CaseStyle } from "./lib/types/types";
 // Components
 import CalendarCase from "./_components/CalendarCase";
 
+// Hooks
+import { useCalendarState, useSnowflakes, useStrawberries } from "./hooks/useAdventCalendarEffects";
+
 // Utilisation de l'algorithme de Fisher-Yates pour mélanger les nombres
 function shuffle(array: number[]) {
     for (let currentIndex = array.length - 1; currentIndex > 0; currentIndex--) {
@@ -50,61 +53,6 @@ function App() {
     // Je crée un état pour stocker le nombre de fraises attrapées
     const [count, setCount] = useState(0);
 
-    // Je récupère les données du localStorage si elles existent, sinon je les crée
-    useEffect(() => {
-        const savedState = localStorage.getItem("calendarState");
-        const savedStrawberries = localStorage.getItem("count");
-
-        if (savedState) {
-            setCalendarState(JSON.parse(savedState));
-        } else {
-            const shuffledNumbers = shuffle([...numbers]);
-            const newStyles = generateInitialStyles(shuffledNumbers);
-            const newState = {
-                numbers: shuffledNumbers,
-                styles: newStyles
-            };
-            setCalendarState(newState);
-            localStorage.setItem("calendarState", JSON.stringify(newState));
-        }
-
-        if (savedStrawberries) {
-            setCount(JSON.parse(savedStrawberries));
-        } else {
-            setCount(0);
-            localStorage.setItem("count", JSON.stringify(0));
-        }
-
-    }, []);
-
-    // Je crée un effet pour créer des flocons de neige à intervalles réguliers
-    useEffect(() => {
-        const createSnowflake = () => {
-            const snowflake = document.createElement("div");
-            snowflake.classList.add("snowflake");
-            snowflake.innerText = "❄️";
-
-            snowflake.style.left = Math.random() * 100 + "vw";
-            snowflake.style.fontSize = `${Math.random() * 20 + 10}px`;
-            snowflake.style.animationDuration = Math.random() * 3 + 5 + "s";
-
-            snowflake.addEventListener("click", () => {
-                incrementCount();
-                snowflake.remove();
-            });
-
-            document.body.appendChild(snowflake);
-        };
-
-        const snowInterval = setInterval(createSnowflake, 300);
-        const timeout = setTimeout(() => clearInterval(snowInterval), 10000);
-
-        return () => {
-            clearInterval(snowInterval);
-            clearTimeout(timeout);
-        };
-    }, []);
-
     const incrementCount = () => {
         setCount(count => {
             const newCount = count + 1;
@@ -112,6 +60,11 @@ function App() {
             return newCount;
         });
     }
+
+    // J'appelle mes hooks personnalisés
+    useCalendarState(numbers, setCalendarState, setCount, shuffle, generateInitialStyles);
+    useSnowflakes();
+    useStrawberries(incrementCount);
 
     // Fonction pour réinitialiser le localStorage
     const resetLocalStorage = () => {
@@ -135,22 +88,11 @@ function App() {
                 <div className="relative">
                     <div className="absolute bottom-0 -left-5 h-[27px] w-[250px] bg-black -z-10 -skew-x-[20deg]"></div>
                     <Countdown
-                        date={new Date(2024, 12, 24)}
+                        date={new Date(2024, 11, 24)}
                         className="text-stroke text-4xl text-white font-bold ml-5 z-10"
                     />
                 </div>
-                <button
-                    onClick={() => {
-                        setCount(count => {
-                            const newCount = count + 1;
-                            localStorage.setItem("count", JSON.stringify(newCount));
-                            return newCount;
-                        });
-                    }}
-                    className="ml-5 text-white"
-                >
-                    Number of strawberries : {count}
-                </button>
+                <p className="ml-5 text-white">Number of strawberries : {count}</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 place-items-center mt-[75px]">
                 <div className="hidden md:block"></div>
