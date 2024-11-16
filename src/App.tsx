@@ -5,6 +5,7 @@ import { CalendarState } from "./lib/types/types";
 // Components
 import CalendarCase from "./_components/CalendarCase";
 import CalendarCaseWindow from "./_components/CalendarCaseWindow";
+import { BackgroundMusic } from "./_components/BackgroundMusic";
 
 // Utils
 import { generateInitialStyles } from "./lib/utils/styles";
@@ -26,7 +27,9 @@ function App() {
     // Je crée un état pour stocker le nombre de fraises attrapées
     const [count, setCount] = useState(0);
     // Je crée un état pour gérer l'ouverture de la fenêtre
-    // const [isOpen, setIsOpen] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    // Je crée un état pour stocker le nombre de la case sélectionnée
+    const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
 
     const incrementCount = () => {
         setCount(count => {
@@ -37,8 +40,13 @@ function App() {
     }
 
     const openWindow = (number: number) => {
-        alert("Test " + number);
-        console.log("Test " + number);
+        setSelectedNumber(number);
+        setShowModal(true);
+    }
+
+    const closeWindow = (number: number) => {
+        setSelectedNumber(null);
+        setShowModal(false);
     }
 
     // J'appelle mes utilitaires personnalisés
@@ -90,20 +98,28 @@ function App() {
                         />
                     ))}
                 </div>
-                {/* <div>
-                    <CalendarCaseWindow
-                        key={number}
-                        number={number}
-                    />
-                </div> */}
+                <div>
+                    {showModal && selectedNumber !== null && (
+                        <CalendarCaseWindow
+                            number={selectedNumber}
+                            onClose={() => closeWindow(selectedNumber)}
+                        />
+                    )}
+                </div>
             </div>
-            <div className="absolute bottom-0 left-0 mb-4 ml-5">
-                <button
-                    onClick={resetLocalStorage}
-                    className="text-white bg-red-500 p-2 rounded"
-                >
-                    Reset local storage
-                </button>
+            <div className="absolute w-full flex items-end justify-between bottom-0 left-0 mb-4">
+                <div className="flex gap-x-2 ml-5">
+                    <button
+                        onClick={resetLocalStorage}
+                        className="text-white bg-red-500 p-2 rounded"
+                    >
+                        Reset local storage
+                    </button>
+                    <BackgroundMusic />
+                </div>
+                <span className="text-sm mr-5">
+                    Music by ConcernedApe (Eric Barone) - Winter (The Wind Can Be Still)
+                </span>
             </div>
         </section>
     );

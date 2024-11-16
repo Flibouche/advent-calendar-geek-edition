@@ -17,4 +17,5 @@ export interface CalendarState {
 
 export interface CalendarCaseWindowProps {
     number: number;
+    onClose: () => void;
 }
