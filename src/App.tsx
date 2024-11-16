@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Countdown from "react-countdown";
 import { CalendarState } from "./lib/types/types";
 
@@ -18,6 +18,7 @@ import { useStrawberries } from "./hooks/useStrawberriesEffect";
 import LocalStorageButton from "./_components/LocalStorageButton";
 
 function App() {
+    // * --------------- CALENDRIER --------------
     // Je crée un tableau de nombres de 1 à 24
     const numbers = Array.from({ length: 24 }, (_, i) => i + 1);
     // Je crée un état pour stocker les nombres et les styles des cases
@@ -25,13 +26,35 @@ function App() {
         numbers: [],
         styles: {}
     });
-    // Je crée un état pour stocker le nombre de fraises attrapées
-    const [count, setCount] = useState(0);
-    // Je crée un état pour gérer l'ouverture de la fenêtre
+
+    // * -------------- MODALS --------------
+    // Je crée un état pour gérer l'ouverture des modals
     const [showModal, setShowModal] = useState(false);
     // Je crée un état pour stocker le nombre de la case sélectionnée
     const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
 
+    // Ouvre une modal avec le numéro de la case sélectionnée
+    const openWindow = (number: number) => {
+        pageRef.current?.classList.add("blur-sm");
+        snowflakes.forEach(snowflake => snowflake.classList.add("blur-sm"));
+        strawberries.forEach(strawberry => strawberry.classList.add("blur-sm"));
+        setSelectedNumber(number);
+        setShowModal(true);
+    }
+
+    // Ferme la modal
+    const closeWindow = () => {
+        pageRef.current?.classList.remove("blur-sm");
+        snowflakes.forEach(snowflake => snowflake.classList.remove("blur-sm"));
+        strawberries.forEach(strawberry => strawberry.classList.remove("blur-sm"));
+        setShowModal(false);
+    }
+
+    // * -------------- COMPTEURS --------------
+    // Je crée un état pour stocker le nombre de fraises attrapées
+    const [count, setCount] = useState(0);
+
+    // Incrémente le nombre de fraises attrapées
     const incrementCount = () => {
         setCount(count => {
             const newCount = count + 1;
@@ -40,76 +63,89 @@ function App() {
         });
     }
 
-    const openWindow = (number: number) => {
-        setSelectedNumber(number);
-        setShowModal(true);
-    }
+    // * -------------- DOM ELEMENTS --------------
+    // Récupère les éléments DOM pour gérer les effets de flou
+    const pageRef = useRef<HTMLDivElement | null>(null);
+    const snowflakes = document.querySelectorAll(".snowflake");
+    const strawberries = document.querySelectorAll(".strawberry");
 
-    const closeWindow = () => {
-        setSelectedNumber(null);
-        setShowModal(false);
-    }
-
-    // J'appelle mes utilitaires personnalisés
+    // * -------------- UTILS --------------
+    // Utilitaires pour générer les styles initiaux et mélanger les cases
     generateInitialStyles(numbers);
     shuffle(numbers);
 
-    // J'appelle mes hooks personnalisés
+    // * ------------ HOOKS ------------
+    // Appelle des hooks personnalisés pour gérer le calendrier, les flocons de neige, et les fraises
     useCalendarState(numbers, setCalendarState, setCount, shuffle, generateInitialStyles);
     useSnowflakes();
     useStrawberries(incrementCount);
 
     return (
-        <section className="relative h-screen overflow-hidden">
-            <video className="absolute h-screen w-full object-cover -z-10" autoPlay muted loop>
-                <source src="/celeste.mp4" />
-            </video>
-            <div className="flex justify-center">
-                <img
-                    src='advent-calendar-logo.gif'
-                    alt='Advent Calendar Geek Edition Logo'
-                    className="w-[750px]"
-                />
-            </div>
-            <div className="flex flex-col items-start">
-                <div className="relative">
-                    <div className="absolute bottom-0 -left-5 h-[27px] w-[250px] bg-black -z-10 -skew-x-[20deg]"></div>
-                    <Countdown
-                        date={new Date(2024, 11, 24)}
-                        className="text-stroke text-4xl text-white font-bold ml-5 z-10"
+        <section>
+            {/* Modals */}
+            <>
+                {showModal && selectedNumber !== null && (
+                    <CalendarCaseWindow
+                        number={selectedNumber}
+                        onClose={closeWindow}
+                    />
+                )}
+            </>
+
+            {/* Page */}
+            <div id="page" ref={pageRef} className="relative h-screen overflow-hidden">
+                {/* Video */}
+                <video className="absolute h-screen w-full object-cover -z-10" autoPlay muted loop>
+                    <source src="/celeste.mp4" />
+                </video>
+
+                {/* Logo */}
+                <div className="flex justify-center">
+                    <img
+                        src='advent-calendar-logo.gif'
+                        alt='Advent Calendar Geek Edition Logo'
+                        className="w-[750px]"
                     />
                 </div>
-                <p className="ml-5 text-white">Number of strawberries : {count}</p>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 place-items-center mt-[75px]">
-                <div className="hidden md:block"></div>
-                <div className="grid grid-cols-6 gap-x-2 gap-y-3 grid-flow-dense w-[300px] md:min-w-[500px]">
-                    {calendarState.numbers.map(number => (
-                        <CalendarCase
-                            key={number}
-                            number={number}
-                            onClick={() => openWindow(number)}
-                            style={calendarState.styles[number]}
+
+                {/* Timer */}
+                <div className="flex flex-col items-start">
+                    <div className="relative">
+                        <div className="absolute bottom-0 -left-5 h-[27px] w-[250px] bg-black -z-10 -skew-x-[20deg]"></div>
+                        <Countdown
+                            date={new Date(2024, 11, 24)}
+                            className="text-stroke text-4xl text-white font-bold ml-5 z-10"
                         />
-                    ))}
+                    </div>
+                    <p className="ml-5 text-white">Number of strawberries : {count}</p>
                 </div>
-                <div>
-                    {showModal && selectedNumber !== null && (
-                        <CalendarCaseWindow
-                            number={selectedNumber}
-                            onClose={closeWindow}
-                        />
-                    )}
+
+                {/* Calendar */}
+                <div className="grid grid-cols-1 lg:grid-cols-[30%_70%] place-items-center py-7">
+                    <div className="hidden md:block"></div>
+                    <div className="grid grid-cols-6 gap-x-2 gap-y-3 grid-flow-dense w-[300px] md:min-w-[700px]">
+                        {calendarState.numbers.map(number => (
+                            <CalendarCase
+                                key={number}
+                                number={number}
+                                onClick={() => openWindow(number)}
+                                style={calendarState.styles[number]}
+                            />
+                        ))}
+                    </div>
                 </div>
-            </div>
-            <div className="absolute w-full flex flex-col gap-y-5 md:flex-row justify-center md:items-end md:justify-between bottom-0 left-0 mb-4">
-                <div className="flex justify-center gap-x-2 md:ml-5">
-                    <LocalStorageButton />
-                    <BackgroundMusic />
+
+                {/* Footer */}
+                <div className="absolute w-full flex flex-col gap-y-5 md:flex-row justify-center md:items-end md:justify-between bottom-0 left-0 mb-4">
+                    <div className="flex justify-center gap-x-2 md:ml-5">
+                        <LocalStorageButton />
+                        <BackgroundMusic />
+                    </div>
+                    <span className="text-center text-sm mr-5">
+                        Music by ConcernedApe (Eric Barone) - Winter (The Wind Can Be Still)
+                    </span>
                 </div>
-                <span className="text-center text-sm mr-5">
-                    Music by ConcernedApe (Eric Barone) - Winter (The Wind Can Be Still)
-                </span>
+
             </div>
         </section>
     );

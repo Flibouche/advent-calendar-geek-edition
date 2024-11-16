@@ -6,14 +6,12 @@ const LocalStorageButton = () => {
     }
 
     return (
-        <div>
-            <button
-                onClick={resetLocalStorage}
-                className="text-white bg-red-500 p-2 rounded"
-            >
-                Reset local storage
-            </button>
-        </div>
+        <button
+            onClick={resetLocalStorage}
+            className="text-white bg-red-500 p-2 rounded z-10"
+        >
+            Reset local storage
+        </button>
     )
 }
 

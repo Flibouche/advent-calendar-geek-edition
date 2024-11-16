@@ -9,31 +9,22 @@ export const BackgroundMusic = () => {
     }
 
     return (
-        <div>
-            <button
-                onClick={handleToggleMusic}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-                {isPlaying ? (
-                    <div className="flex items-center gap-2">
-                        <span>Stop music</span>
-                        <FaVolumeMute />
-                    </div>
-                ) : (
-                    <div className="flex items-center gap-2">
-                        <span>Play Music</span>
-                        <FaMusic />
-                    </div>
-                )
-                }
-            </button>
-
-            {isPlaying && (
-                <audio autoPlay loop>
-                    <source src="/winter.mp3" type="audio/mpeg" />
-                    Your browser does not support the audio tag.
-                </audio>
-            )}
-        </div>
+        <button
+            onClick={handleToggleMusic}
+            className="bg-blue-500 text-white px-4 py-2 rounded z-10"
+        >
+            {isPlaying ? (
+                <div className="flex items-center gap-2">
+                    <span>Stop music</span>
+                    <FaVolumeMute />
+                </div>
+            ) : (
+                <div className="flex items-center gap-2">
+                    <span>Play Music</span>
+                    <FaMusic />
+                </div>
+            )
+            }
+        </button>
     );
 };

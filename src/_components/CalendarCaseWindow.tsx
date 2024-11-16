@@ -11,6 +11,7 @@ const CalendarCaseWindow = ({ number, onClose }: CalendarCaseWindowProps) => {
 
     const content = getContent(); // Je stocke le contenu de la case dans une variable
 
+    // Fonction pour gérer la fermeture de la fenêtre si on clique en dehors de la fenêtre
     const handleBackgroundClick = (event: MouseEvent<HTMLDivElement>) => {
         if (event.target === event.currentTarget) {
             onClose();
