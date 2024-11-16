@@ -1,7 +1,7 @@
 import { gameData } from "../data/gameData";
 import { CalendarCaseWindowProps } from "../lib/types/types"
 
-const CalendarCaseWindow = ({ number }: CalendarCaseWindowProps) => {
+const CalendarCaseWindow = ({ number, onClose }: CalendarCaseWindowProps) => {
 
     // Fonction pour récupérer le contenu de la case
     const getContent = () => {
@@ -12,9 +12,15 @@ const CalendarCaseWindow = ({ number }: CalendarCaseWindowProps) => {
 
     return (
         <div className="absolute inset-0 flex justify-center items-center z-[10000]">
-            <div className="flex rounded-lg w-[250px] h-[500px] bg-red-500">
+            <div className="relative flex flex-col rounded-lg w-[250px] h-[500px] bg-red-500">
+                <p
+                    className="absolute top-0 right-0 mr-2 cursor-pointer"
+                    onClick={onClose}
+                >
+                    X
+                </p>
                 {content && (
-                    <div>
+                    <div className="">
                         <h2>{content.number}</h2>
                         <h3>{content.game}</h3>
                         <p>{content.description}</p>

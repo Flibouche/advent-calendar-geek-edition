@@ -15,6 +15,7 @@ import { shuffle } from "./utils/utils";
 import { useCalendarState } from "./hooks/useCalendarStateEffect";
 import { useSnowflakes } from "./hooks/useSnowflakesEffect";
 import { useStrawberries } from "./hooks/useStrawberriesEffect";
+import LocalStorageButton from "./_components/LocalStorageButton";
 
 function App() {
     // Je crée un tableau de nombres de 1 à 24
@@ -44,7 +45,7 @@ function App() {
         setShowModal(true);
     }
 
-    const closeWindow = (number: number) => {
+    const closeWindow = () => {
         setSelectedNumber(null);
         setShowModal(false);
     }
@@ -57,12 +58,6 @@ function App() {
     useCalendarState(numbers, setCalendarState, setCount, shuffle, generateInitialStyles);
     useSnowflakes();
     useStrawberries(incrementCount);
-
-    // Fonction pour réinitialiser le localStorage
-    const resetLocalStorage = () => {
-        localStorage.clear();
-        window.location.reload();
-    }
 
     return (
         <section className="relative h-screen overflow-hidden">
@@ -102,22 +97,17 @@ function App() {
                     {showModal && selectedNumber !== null && (
                         <CalendarCaseWindow
                             number={selectedNumber}
-                            onClose={() => closeWindow(selectedNumber)}
+                            onClose={closeWindow}
                         />
                     )}
                 </div>
             </div>
-            <div className="absolute w-full flex items-end justify-between bottom-0 left-0 mb-4">
-                <div className="flex gap-x-2 ml-5">
-                    <button
-                        onClick={resetLocalStorage}
-                        className="text-white bg-red-500 p-2 rounded"
-                    >
-                        Reset local storage
-                    </button>
+            <div className="absolute w-full flex flex-col gap-y-5 md:flex-row justify-center md:items-end md:justify-between bottom-0 left-0 mb-4">
+                <div className="flex justify-center gap-x-2 md:ml-5">
+                    <LocalStorageButton />
                     <BackgroundMusic />
                 </div>
-                <span className="text-sm mr-5">
+                <span className="text-center text-sm mr-5">
                     Music by ConcernedApe (Eric Barone) - Winter (The Wind Can Be Still)
                 </span>
             </div>
