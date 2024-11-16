@@ -4,6 +4,7 @@ import { CalendarState } from "./lib/types/types";
 
 // Components
 import CalendarCase from "./_components/CalendarCase";
+import CalendarCaseWindow from "./_components/CalendarCaseWindow";
 
 // Utils
 import { generateInitialStyles } from "./lib/utils/styles";
@@ -24,6 +25,8 @@ function App() {
     });
     // Je crée un état pour stocker le nombre de fraises attrapées
     const [count, setCount] = useState(0);
+    // Je crée un état pour gérer l'ouverture de la fenêtre
+    // const [isOpen, setIsOpen] = useState(false);
 
     const incrementCount = () => {
         setCount(count => {
@@ -31,6 +34,11 @@ function App() {
             localStorage.setItem("count", JSON.stringify(newCount));
             return newCount;
         });
+    }
+
+    const openWindow = (number: number) => {
+        alert("Test " + number);
+        console.log("Test " + number);
     }
 
     // J'appelle mes utilitaires personnalisés
@@ -77,10 +85,17 @@ function App() {
                         <CalendarCase
                             key={number}
                             number={number}
+                            onClick={() => openWindow(number)}
                             style={calendarState.styles[number]}
                         />
                     ))}
                 </div>
+                {/* <div>
+                    <CalendarCaseWindow
+                        key={number}
+                        number={number}
+                    />
+                </div> */}
             </div>
             <div className="absolute bottom-0 left-0 mb-4 ml-5">
                 <button
