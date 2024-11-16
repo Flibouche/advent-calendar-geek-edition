@@ -1,13 +1,18 @@
 import { CalendarCaseProps } from "../lib/types/types";
 
-const CalendarCase = ({ number, style, onClick }: CalendarCaseProps) => {
+const CalendarCase = ({ number, onClick, style, isClicked }: CalendarCaseProps) => {
     return (
-        <div
+        <button
             onClick={onClick}
-            className={`flex items-center justify-center cursor-pointer text-white z-10 rounded-lg shadow-xl min-h-[50px] ${style.colorClass} ${style.colSpanClass} ${style.rowSpanClass}`}
+            className={`flex items-center justify-center cursor-pointer z-10 transition-all duration-300 hover:scale-110 rounded-lg shadow-xl min-h-[50px] ${style.colSpanClass} ${style.rowSpanClass} ${isClicked
+                ? `bg-emerald-600`
+                : `${style.colorClass}`
+                }`}
         >
-            {number}
-        </div>
+            <span className="text-xl md:text-4xl font-bold text-white">
+                {number}
+            </span>
+        </button>
     );
 };
 

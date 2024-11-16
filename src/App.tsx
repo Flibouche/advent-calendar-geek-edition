@@ -1,21 +1,21 @@
-import { useEffect, useRef, useState } from "react";
 import Countdown from "react-countdown";
+import { useRef, useState } from "react";
 import { CalendarState } from "./lib/types/types";
 
 // Components
 import CalendarCase from "./_components/CalendarCase";
-import CalendarCaseWindow from "./_components/CalendarCaseWindow";
 import { BackgroundMusic } from "./_components/BackgroundMusic";
+import LocalStorageButton from "./_components/LocalStorageButton";
+import CalendarCaseWindow from "./_components/CalendarCaseWindow";
 
 // Utils
-import { generateInitialStyles } from "./lib/utils/styles";
 import { shuffle } from "./utils/utils";
+import { generateInitialStyles } from "./lib/utils/styles";
 
 // Hooks
-import { useCalendarState } from "./hooks/useCalendarStateEffect";
 import { useSnowflakes } from "./hooks/useSnowflakesEffect";
 import { useStrawberries } from "./hooks/useStrawberriesEffect";
-import LocalStorageButton from "./_components/LocalStorageButton";
+import { useCalendarState } from "./hooks/useCalendarStateEffect";
 
 function App() {
     // * --------------- CALENDRIER --------------
@@ -32,6 +32,11 @@ function App() {
     const [showModal, setShowModal] = useState(false);
     // Je crée un état pour stocker le nombre de la case sélectionnée
     const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
+    // Je crée un état pour stocker les cases cliquées dans le localStorage
+    const [clickedCases, setClickedCases] = useState(() => {
+        const saved = localStorage.getItem("clickedCases");
+        return saved ? JSON.parse(saved) : {};
+    })
 
     // Ouvre une modal avec le numéro de la case sélectionnée
     const openWindow = (number: number) => {
@@ -39,6 +44,15 @@ function App() {
         snowflakes.forEach(snowflake => snowflake.classList.add("blur-sm"));
         strawberries.forEach(strawberry => strawberry.classList.add("blur-sm"));
         setSelectedNumber(number);
+        // Je mets à jour l'état des cases cliquées
+        setClickedCases((prev: Record<number, boolean>) => {
+            const newClickedCases = {
+                ...prev, // Je garde les cases déjà cliquées
+                [number]: true
+            };
+            localStorage.setItem("clickedCases", JSON.stringify(newClickedCases));
+            return newClickedCases;
+        });
         setShowModal(true);
     }
 
@@ -93,7 +107,7 @@ function App() {
             </>
 
             {/* Page */}
-            <div id="page" ref={pageRef} className="relative h-screen overflow-hidden">
+            <div ref={pageRef} className="relative h-screen overflow-hidden">
                 {/* Video */}
                 <video className="absolute h-screen w-full object-cover -z-10" autoPlay muted loop>
                     <source src="/celeste.mp4" />
@@ -123,13 +137,14 @@ function App() {
                 {/* Calendar */}
                 <div className="grid grid-cols-1 lg:grid-cols-[30%_70%] place-items-center py-7">
                     <div className="hidden md:block"></div>
-                    <div className="grid grid-cols-6 gap-x-2 gap-y-3 grid-flow-dense w-[300px] md:min-w-[700px]">
+                    <div className="grid grid-cols-6 bg-white bg-opacity-10 rounded-lg p-5 gap-x-2 gap-y-3 grid-flow-dense w-[300px] md:min-w-[700px]">
                         {calendarState.numbers.map(number => (
                             <CalendarCase
                                 key={number}
                                 number={number}
                                 onClick={() => openWindow(number)}
                                 style={calendarState.styles[number]}
+                                isClicked={clickedCases[number]}
                             />
                         ))}
                     </div>
@@ -147,6 +162,7 @@ function App() {
                 </div>
 
             </div>
+
         </section>
     );
 }

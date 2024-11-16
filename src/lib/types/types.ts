@@ -2,6 +2,7 @@ export interface CalendarCaseProps {
     number: number;
     style: CaseStyle;
     onClick: () => void;
+    isClicked: boolean;
 }
 
 export interface CaseStyle {
