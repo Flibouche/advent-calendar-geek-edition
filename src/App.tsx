@@ -13,9 +13,9 @@ import { shuffle } from "./utils/utils";
 import { generateInitialStyles } from "./lib/utils/styles";
 
 // Hooks
-import { useSnowflakesEffect } from "./hooks/useSnowflakesEffect";
-import { useStrawberriesEffect } from "./hooks/useStrawberriesEffect";
-import { useCalendarStateEffect } from "./hooks/useCalendarStateEffect";
+import { useSnowflakesEffect } from "./hooks/useSnowflakesEffect.ts";
+import { useStrawberriesEffect } from "./hooks/useStrawberriesEffect.ts";
+import { useCalendarStateEffect } from "./hooks/useCalendarStateEffect.ts";
 
 function App() {
     // * --------------- CALENDRIER --------------
