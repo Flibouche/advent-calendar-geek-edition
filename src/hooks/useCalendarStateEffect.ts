@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { CalendarState, CaseStyle } from "../lib/types/types";
 
 // Je récupère les données du localStorage si elles existent, sinon je les crée
-export function useCalendarState(
+export function useCalendarStateEffect(
     numbers: number[],
     setCalendarState: (state: CalendarState) => void,
     setCount: (count: number) => void,

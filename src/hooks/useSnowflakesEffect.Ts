@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 // Hook pour créer des flocons de neige à intervalles réguliers
-export function useSnowflakes() {
+export function useSnowflakesEffect() {
     useEffect(() => {
         const createSnowflake = () => {
             const snowflake = document.createElement("div");

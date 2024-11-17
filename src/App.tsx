@@ -13,9 +13,9 @@ import { shuffle } from "./utils/utils";
 import { generateInitialStyles } from "./lib/utils/styles";
 
 // Hooks
-import { useSnowflakes } from "./hooks/useSnowflakesEffect";
-import { useStrawberries } from "./hooks/useStrawberriesEffect";
-import { useCalendarState } from "./hooks/useCalendarStateEffect";
+import { useSnowflakesEffect } from "./hooks/useSnowflakesEffect";
+import { useStrawberriesEffect } from "./hooks/useStrawberriesEffect";
+import { useCalendarStateEffect } from "./hooks/useCalendarStateEffect";
 
 function App() {
     // * --------------- CALENDRIER --------------
@@ -90,9 +90,9 @@ function App() {
 
     // * ------------ HOOKS ------------
     // Appelle des hooks personnalisés pour gérer le calendrier, les flocons de neige, et les fraises
-    useCalendarState(numbers, setCalendarState, setCount, shuffle, generateInitialStyles);
-    useSnowflakes();
-    useStrawberries(incrementCount);
+    useCalendarStateEffect(numbers, setCalendarState, setCount, shuffle, generateInitialStyles);
+    useSnowflakesEffect();
+    useStrawberriesEffect(incrementCount);
 
     return (
         <section>

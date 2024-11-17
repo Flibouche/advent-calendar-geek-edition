@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 // Hook pour créer des fraises à intervalles réguliers
-export function useStrawberries(incrementCount: () => void) {
+export function useStrawberriesEffect(incrementCount: () => void) {
     useEffect(() => {
         const createStrawberry = () => {
             const strawberry = document.createElement("img");
