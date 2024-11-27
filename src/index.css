@@ -77,3 +77,7 @@
     animation-iteration-count: infinite, infinite;
     animation-play-state: running, running;
 }
+
+.strawberry {
+    z-index: 9999;
+}

@@ -28,7 +28,7 @@ export function useStrawberries(incrementCount: () => void) {
             }
         }
 
-        const strawberriesInterval = setInterval(createStrawberry, 10000);
+        const strawberriesInterval = setInterval(createStrawberry, 7000);
         const strawberriesIntervalRemove = setInterval(removeAutomaticallyStrawberry, 20000);
 
         return () => {

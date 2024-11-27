@@ -1,5 +1,5 @@
 import Countdown from "react-countdown";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CalendarState } from "./lib/types/types";
 
 // Components
@@ -64,6 +64,22 @@ function App() {
         setShowModal(false);
     }
 
+    // * --------------- VIDEO --------------
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+
+    useEffect(() => {
+        // Fonction pour mettre à jour la position du scroll
+        const handleScroll = () => {
+            setScrollPosition(window.scrollY);
+        };
+
+        // Ajout de l'événement de scroll
+        window.addEventListener("scroll", handleScroll);
+    }, []);
+
+    const videoStyle = { transform: `translateY(${scrollPosition * 1}px)` };
+
     // * -------------- COMPTEURS --------------
     // Je crée un état pour stocker le nombre de fraises attrapées
     const [count, setCount] = useState(0);
@@ -107,9 +123,16 @@ function App() {
             </>
 
             {/* Page */}
-            <div ref={pageRef} className="relative h-screen overflow-hidden">
+            <div ref={pageRef} className="relative">
                 {/* Video */}
-                <video className="absolute h-screen w-full object-cover -z-10" autoPlay muted loop>
+                <video
+                    ref={videoRef}
+                    className="absolute h-screen w-full object-cover -z-10"
+                    autoPlay
+                    muted
+                    loop
+                    style={videoStyle}
+                >
                     <source src="/celeste.mp4" />
                 </video>
 
@@ -135,7 +158,7 @@ function App() {
                 </div>
 
                 {/* Calendar */}
-                <div className="grid grid-cols-1 lg:grid-cols-[30%_70%] place-items-center py-7">
+                <div className="flex justify-around py-7">
                     <div className="hidden md:block"></div>
                     <div className="grid grid-cols-6 bg-white bg-opacity-10 rounded-lg p-5 gap-x-2 gap-y-3 grid-flow-dense w-[300px] md:min-w-[700px]">
                         {calendarState.numbers.map(number => (
@@ -151,7 +174,7 @@ function App() {
                 </div>
 
                 {/* Footer */}
-                <div className="absolute w-full flex flex-col gap-y-5 md:flex-row justify-center md:items-end md:justify-between bottom-0 left-0 mb-4">
+                <div className="w-full flex flex-col gap-y-5 md:flex-row justify-center md:items-end md:justify-between bottom-0 left-0 mb-4">
                     <div className="flex justify-center gap-x-2 md:ml-5">
                         <LocalStorageButton />
                         <BackgroundMusic />
