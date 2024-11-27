@@ -40,6 +40,18 @@ function App() {
 
     // Ouvre une modal avec le numéro de la case sélectionnée
     const openWindow = (number: number) => {
+        // Je récupère les cases déjà cliquées dans le localStorage
+        const clickedCases = JSON.parse(localStorage.getItem("clickedCases") || "{}");
+
+        // Je récupère le numéro le plus élevé des cases cliquées
+        const maxClickedNumber = Math.max(0, ...Object.keys(clickedCases).map(Number));
+
+        // Je vérifie si le nouveau numéro cliqué est le suivant
+        if (number !== maxClickedNumber + 1) {
+            alert(`To open the case, you have to click to the following number : ${maxClickedNumber + 1} !`);
+            return;
+        }
+
         pageRef.current?.classList.add("blur-sm");
         snowflakes.forEach(snowflake => snowflake.classList.add("blur-sm"));
         strawberries.forEach(strawberry => strawberry.classList.add("blur-sm"));
