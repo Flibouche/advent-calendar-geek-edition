@@ -16,6 +16,7 @@ import { generateInitialStyles } from "./lib/utils/styles";
 import { useSnowflakes } from "./hooks/useSnowflakes.ts";
 import { useStrawberries } from "./hooks/useStrawberries.ts";
 import { useCalendarState } from "./hooks/useCalendarState.ts";
+import { toast } from "react-toastify";
 
 function App() {
     // * --------------- CALENDRIER --------------
@@ -42,16 +43,19 @@ function App() {
     const openWindow = (number: number) => {
         // Je récupère les cases déjà cliquées dans le localStorage
         const clickedCases = JSON.parse(localStorage.getItem("clickedCases") || "{}");
-        if(clickedCases[number]) {
-            alert(`You have already opened this case!`);
+
+        // Si la case est déjà ouverte, j'affiche un message
+        if (clickedCases[number]) {
+            toast.info(`You have already opened this case ! 👀 `);
+            return;
         }
 
         // Je récupère le numéro le plus élevé des cases cliquées
         const maxClickedNumber = Math.max(0, ...Object.keys(clickedCases).map(Number));
 
-        // Je vérifie si le nouveau numéro cliqué est le suivant
-        if (number !== maxClickedNumber + 1) {
-            alert(`To open the case, you have to click to the following number : ${maxClickedNumber + 1} !`);
+        // Je vérifie si la case cliquée est la suivante
+        if (!clickedCases[number] && number !== maxClickedNumber + 1) {
+            toast.warning(`To open the case, you have to click to the following number : ${maxClickedNumber + 1} 🤦 !`);
             return;
         }
 
@@ -136,6 +140,7 @@ function App() {
                     />
                 )}
             </>
+
 
             {/* Page */}
             <div ref={pageRef} className="relative flex flex-col flex-grow">
