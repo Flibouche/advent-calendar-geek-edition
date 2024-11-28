@@ -1,6 +1,7 @@
 import { MouseEvent } from "react";
 import { gameData } from "../data/gameData";
-import { CalendarCaseWindowProps } from "../lib/types/types"
+import { CalendarCaseWindowProps } from "../lib/types/types";
+import Confetti from 'react-confetti';
 
 const CalendarCaseWindow = ({ number, onClose }: CalendarCaseWindowProps) => {
 
@@ -23,6 +24,12 @@ const CalendarCaseWindow = ({ number, onClose }: CalendarCaseWindowProps) => {
             className="absolute inset-0 flex justify-center items-center z-[10000]"
             onClick={handleBackgroundClick}
         >
+            <Confetti
+                width={window.innerWidth}
+                height={window.innerHeight}
+                numberOfPieces={300}
+                recycle={false}
+            />
             <div className="relative flex flex-col rounded-lg w-[250px] h-[500px] bg-red-500">
                 <p
                     className="absolute top-0 right-0 mr-2 cursor-pointer"
