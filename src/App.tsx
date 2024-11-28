@@ -42,6 +42,9 @@ function App() {
     const openWindow = (number: number) => {
         // Je récupère les cases déjà cliquées dans le localStorage
         const clickedCases = JSON.parse(localStorage.getItem("clickedCases") || "{}");
+        if(clickedCases[number]) {
+            alert(`You have already opened this case!`);
+        }
 
         // Je récupère le numéro le plus élevé des cases cliquées
         const maxClickedNumber = Math.max(0, ...Object.keys(clickedCases).map(Number));
@@ -123,7 +126,7 @@ function App() {
     useStrawberries(incrementCount);
 
     return (
-        <section>
+        <section className="flex flex-col min-h-screen">
             {/* Modals */}
             <>
                 {showModal && selectedNumber !== null && (
@@ -135,7 +138,7 @@ function App() {
             </>
 
             {/* Page */}
-            <div ref={pageRef} className="relative">
+            <div ref={pageRef} className="relative flex flex-col flex-grow">
                 {/* Video */}
                 <video
                     ref={videoRef}
@@ -170,9 +173,9 @@ function App() {
                 </div>
 
                 {/* Calendar */}
-                <div className="flex justify-around py-7">
+                <div className="flex mt-auto justify-around py-7">
                     <div className="hidden md:block"></div>
-                    <div className="grid grid-cols-6 bg-white bg-opacity-10 rounded-lg p-5 gap-x-2 gap-y-3 grid-flow-dense w-[300px] md:min-w-[700px]">
+                    <div className="grid grid-cols-5 lg:grid-cols-6 bg-white bg-opacity-10 rounded-lg p-5 gap-x-2 gap-y-3 grid-flow-dense w-[300px] md:min-w-[700px]">
                         {calendarState.numbers.map(number => (
                             <CalendarCase
                                 key={number}
@@ -186,7 +189,7 @@ function App() {
                 </div>
 
                 {/* Footer */}
-                <div className="w-full flex flex-col gap-y-5 md:flex-row justify-center md:items-end md:justify-between bottom-0 left-0 mb-4">
+                <div className="mt-auto w-full flex flex-col gap-y-5 md:flex-row justify-center md:items-end md:justify-between bottom-0 left-0 mb-4">
                     <div className="flex justify-center gap-x-2 md:ml-5">
                         <LocalStorageButton />
                         <BackgroundMusic />

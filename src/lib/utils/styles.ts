@@ -9,19 +9,12 @@ function generateRandomGradient(gradients: string[] = []) {
 export function generateInitialStyles(numbers: number[]): Record<number, CaseStyle> {
     // Je crée des tableaux de colSpan et de rowSpan
     const gradients = [
-        'bg-gradient-to-r from-red-500 to-orange-500',
-        'bg-gradient-to-r from-blue-500 to-cyan-500',
-        'bg-gradient-to-r from-green-500 to-emerald-500',
-        'bg-gradient-to-r from-yellow-500 to-amber-500',
+        'bg-gradient-to-r from-fuchsia-500 to-cyan-500',
         'bg-gradient-to-r from-pink-500 to-rose-500',
-        'bg-gradient-to-r from-purple-500 to-fuchsia-500',
-        'bg-gradient-to-r from-orange-500 to-amber-500',
-        'bg-gradient-to-r from-teal-500 to-cyan-500',
-        'bg-gradient-to-r from-indigo-500 to-blue-500',
+        'bg-gradient-to-r from-blue-600 to-violet-600',
+        'bg-gradient-to-r from-fuchsia-600 to-purple-600',
+        'bg-gradient-to-r from-rose-400 to-red-500',
     ]
-
-    const colSpan = ["col-span-1", "col-span-2"];
-    const rowSpan = ["row-span-1", "row-span-2"];
 
     // Je crée un objet qui contiendra les styles pour chaque case
     const styles: Record<number, CaseStyle> = {};
@@ -30,10 +23,11 @@ export function generateInitialStyles(numbers: number[]): Record<number, CaseSty
     numbers.forEach(number => {
         styles[number] = {
             colorClass: generateRandomGradient(gradients),
-            colSpanClass: colSpan[Math.floor(Math.random() * colSpan.length)],
-            rowSpanClass: rowSpan[Math.floor(Math.random() * rowSpan.length)]
+            colSpanClass: number === 1 || number === 24
+                ? "col-span-2 lg:col-span-3" : "col-span-1",
+            rowSpanClass: number === 1 || number === 24
+                ? "row-span-3 lg:row-span-10" : "row-span-1 lg:row-span-8",
         };
     });
-
     return styles;
 }

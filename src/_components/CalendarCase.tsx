@@ -5,7 +5,7 @@ const CalendarCase = ({ number, onClick, style, isClicked }: CalendarCaseProps) 
         <button
             onClick={onClick}
             className={`flex items-center justify-center cursor-pointer z-10 transition-all duration-300 hover:scale-110 rounded-lg shadow-xl min-h-[50px] ${style.colSpanClass} ${style.rowSpanClass} ${isClicked
-                ? `bg-emerald-600`
+                ? `bg-gray-400 hover:scale-100`
                 : `${style.colorClass}`
                 }`}
         >
