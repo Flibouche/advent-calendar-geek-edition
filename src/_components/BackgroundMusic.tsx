@@ -17,11 +17,14 @@ export const BackgroundMusic = () => {
     }
 
     return (
-        <div>
+        <div className="relative inline-flex group hover:-translate-y-1 duration-300">
+            <div
+                className="absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#FF675E] via-[#FF44EC] to-[#44BCFF] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 group-hover:animate-pulse">
+            </div>
             {/* Bouton pour jouer ou arrêter la musique */}
             <button
                 onClick={handleToggleMusic}
-                className="bg-blue-500 text-white px-4 py-2 rounded z-10"
+                className="relative inline-flex items-center justify-center px-2 py-2 text-lg font-bold text-white transition-all duration-200 bg-gradient-to-r from-[#FF675E] via-[#FF44EC] to-[#44BCFF] rounded-xl focus:ring-2 focus:ring-white"
             >
                 {isPlaying ? (
                     <div className="flex items-center gap-2">

@@ -17,6 +17,7 @@ import { useSnowflakes } from "./hooks/useSnowflakes.ts";
 import { useStrawberries } from "./hooks/useStrawberries.ts";
 import { useCalendarState } from "./hooks/useCalendarState.ts";
 import { toast } from "react-toastify";
+import { MobileMenu } from "./_components/MobileMenu.tsx";
 
 function App() {
     // * --------------- CALENDRIER --------------
@@ -144,6 +145,7 @@ function App() {
 
             {/* Page */}
             <div ref={pageRef} className="relative flex flex-col flex-grow">
+                <MobileMenu />
                 {/* Video */}
                 <video
                     ref={videoRef}
@@ -178,7 +180,7 @@ function App() {
                 </div>
 
                 {/* Calendar */}
-                <div className="flex mt-auto justify-around py-7">
+                <div className="flex my-auto md:mt-auto justify-around md:py-7">
                     <div className="hidden md:block"></div>
                     <div className="grid grid-cols-5 lg:grid-cols-6 bg-white bg-opacity-10 rounded-lg p-5 gap-x-2 gap-y-3 grid-flow-dense w-[300px] md:min-w-[700px]">
                         {calendarState.numbers.map(number => (
@@ -194,7 +196,7 @@ function App() {
                 </div>
 
                 {/* Footer */}
-                <div className="mt-auto w-full flex flex-col gap-y-5 md:flex-row justify-center md:items-end md:justify-between bottom-0 left-0 mb-4">
+                <div className="hidden md:flex mt-auto w-full flex-col gap-y-5 md:flex-row justify-center md:items-end md:justify-between bottom-0 left-0 mb-4">
                     <div className="flex justify-center gap-x-2 md:ml-5">
                         <LocalStorageButton />
                         <BackgroundMusic />
