@@ -1,10 +1,12 @@
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 import { gameData } from "../data/gameData";
 import { CalendarCaseWindowProps } from "../lib/types/types";
 import Confetti from 'react-confetti';
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const CalendarCaseWindow = ({ number, onClose }: CalendarCaseWindowProps) => {
+    // Je crée un état pour gérer la taille de la description du jeu
+    const [isExpanded, setIsExpanded] = useState(false);
 
     // Fonction pour récupérer le contenu de la case
     const getContent = () => {
@@ -20,11 +22,9 @@ const CalendarCaseWindow = ({ number, onClose }: CalendarCaseWindowProps) => {
         }
     }
 
-    const handleSeeMore = () => {
-        const description = document.querySelector('.description');
-        const seeMore = document.querySelector('.see-more');
-        description?.classList.remove('line-clamp-2');
-        seeMore?.remove();
+    // Fonction pour gérer l'expansion de la description
+    const handleToggleDescription = () => {
+        setIsExpanded(!isExpanded);
     }
 
     return (
@@ -55,15 +55,24 @@ const CalendarCaseWindow = ({ number, onClose }: CalendarCaseWindowProps) => {
                         <h2 className="text-3xl font-bold capitalize mb-4">
                             {content.game}
                         </h2>
-                        <p className="description text-black line-clamp-2 mb-4">{content.description}</p>
+                        <p className={`description text-black ${isExpanded ? '' : 'line-clamp-2'} mb-4`}>{content.description}</p>
                         {content.description.length > 100 && (
                             <div className="flex w-full">
                                 <button
                                     className="see-more flex flex-row gap-2 items-center bg-black/20 py-1 px-2 rounded-lg hover:bg-white/60 transition duration-300"
-                                    onClick={handleSeeMore}
+                                    onClick={handleToggleDescription}
                                 >
-                                    <FaEye className="w-[15px]" />
-                                    <span>See more</span>
+                                    {isExpanded ? (
+                                        <>
+                                            <FaEyeSlash className="w-[15px]" />
+                                            <span>See less</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FaEye className="w-[15px]" />
+                                            <span>See more</span>
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         )}
@@ -76,11 +85,6 @@ const CalendarCaseWindow = ({ number, onClose }: CalendarCaseWindowProps) => {
                             {content.epicLink && (
                                 <a href={content.epicLink} target="_blank" className="hover:-translate-y-1 duration-300">
                                     <img src="/epic.svg" alt="Epic logo" />
-                                </a>
-                            )}
-                            {content.itchLink && (
-                                <a href={content.itchLink} target="_blank" className="hover:-translate-y-1 duration-300">
-                                    <img src="/itch.svg" alt="Itch.io logo" />
                                 </a>
                             )}
                         </div>
