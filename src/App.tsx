@@ -131,7 +131,7 @@ function App() {
     useStrawberries(incrementCount);
 
     return (
-        <section className="flex flex-col min-h-screen">
+        <section className="flex flex-col min-h-screen overflow-hidden">
             {/* Modals */}
             <>
                 {showModal && selectedNumber !== null && (
